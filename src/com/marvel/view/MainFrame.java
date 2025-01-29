@@ -1,10 +1,5 @@
 package com.marvel.view;
 
-import com.marvel.model.Actor;
-import com.marvel.model.Habilidad;
-import com.marvel.model.Heroe;
-import com.marvel.model.Antihéroe;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -189,5 +184,129 @@ public class MainFrame extends JFrame {
             MainFrame frame = new MainFrame();
             frame.setVisible(true);
         });
+    }
+}
+
+class Heroe {
+    private String nombre;
+    private String identificacion;
+    private String alias;
+    private Actor actor;
+    private int edad;
+    private List<Habilidad> habilidades;
+
+    public Heroe(String nombre, String identificacion, String alias, Actor actor, int edad) {
+        this.nombre = nombre;
+        this.identificacion = identificacion;
+        this.alias = alias;
+        this.actor = actor;
+        this.edad = edad;
+        this.habilidades = new ArrayList<>();
+    }
+
+    public void agregarHabilidad(Habilidad habilidad) {
+        habilidades.add(habilidad);
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public Actor getActor() {
+        return actor;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public List<Habilidad> getHabilidades() {
+        return habilidades;
+    }
+}
+
+class Antihéroe {
+    private String nombre;
+    private String identificacion;
+    private String alias;
+    private Actor actor;
+    private int edad;
+    private List<Habilidad> habilidades;
+
+    public Antihéroe(String nombre, String identificacion, String alias, Actor actor, int edad) {
+        this.nombre = nombre;
+        this.identificacion = identificacion;
+        this.alias = alias;
+        this.actor = actor;
+        this.edad = edad;
+        this.habilidades = new ArrayList<>();
+    }
+
+    public void agregarHabilidad(Habilidad habilidad) {
+        habilidades.add(habilidad);
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public Actor getActor() {
+        return actor;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public List<Habilidad> getHabilidades() {
+        return habilidades;
+    }
+}
+
+class Actor {
+    private String nombre;
+    private String identificacion;
+    private String nacionalidad;
+    private int edad;
+
+    public Actor(String nombre, String identificacion, String nacionalidad, int edad) {
+        this.nombre = nombre;
+        this.identificacion = identificacion;
+        this.nacionalidad = nacionalidad;
+        this.edad = edad;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+}
+
+class Habilidad {
+    private String nombre;
+    private String descripcion;
+
+    public Habilidad(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 }
