@@ -6,7 +6,6 @@ import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import com.marvel.model.Actor;
@@ -35,7 +34,7 @@ public class MainFrame extends JFrame {
         antihéroes = new ArrayList<>();
         actores = new ArrayList<>();
 
-        setTitle("Marvel Character Manager");
+        setTitle("Héroes y AntiHéroes de Marvel");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -44,62 +43,76 @@ public class MainFrame extends JFrame {
     }
 
     private void initComponents() {
-        JPanel panel = new JPanel(new GridLayout(0, 2));
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
+        JPanel inputPanel = new JPanel(new GridLayout(0, 2));
 
-        nombreField = new JTextField();
-        aliasField = new JTextField();
-        identificacionField = new JTextField();
-        nacionalidadField = new JTextField();
-        edadField = new JTextField();
-        habilidadField = new JTextField();
-        categoriaHabilidadCombo = new JComboBox<>(new String[]{"Común", "Especial", "Épico", "Legendaria"});
-        actorCombo = new JComboBox<>();
-
-        panel.add(new JLabel("Nombre:"));
-        panel.add(nombreField);
-        panel.add(new JLabel("Alias:"));
-        panel.add(aliasField);
-        panel.add(new JLabel("Identificación:"));
-        panel.add(identificacionField);
-        panel.add(new JLabel("Nacionalidad:"));
-        panel.add(nacionalidadField);
-        panel.add(new JLabel("Edad:"));
-        panel.add(edadField);
-        panel.add(new JLabel("Habilidad:"));
-        panel.add(habilidadField);
-        panel.add(new JLabel("Categoría de Habilidad:"));
-        panel.add(categoriaHabilidadCombo);
-        panel.add(new JLabel("Actor:"));
-        panel.add(actorCombo);
-
+        // Botones de acción
         JButton addHeroeButton = new JButton("Agregar Héroe");
         addHeroeButton.addActionListener(e -> agregarHeroe());
-        panel.add(addHeroeButton);
+        buttonPanel.add(addHeroeButton);
 
         JButton addAntihéroeButton = new JButton("Agregar Antihéroe");
         addAntihéroeButton.addActionListener(e -> agregarAntihéroe());
-        panel.add(addAntihéroeButton);
+        buttonPanel.add(addAntihéroeButton);
 
         JButton addActorButton = new JButton("Agregar Actor");
         addActorButton.addActionListener(e -> agregarActor());
-        panel.add(addActorButton);
+        buttonPanel.add(addActorButton);
 
         JButton editButton = new JButton("Editar");
         editButton.addActionListener(e -> editarPersonaje());
-        panel.add(editButton);
+        buttonPanel.add(editButton);
 
         JButton deleteButton = new JButton("Eliminar");
         deleteButton.addActionListener(e -> eliminarPersonaje());
-        panel.add(deleteButton);
+        buttonPanel.add(deleteButton);
 
         JButton exportButton = new JButton("Exportar a TXT");
         exportButton.addActionListener(e -> exportarATxt());
-        panel.add(exportButton);
+        buttonPanel.add(exportButton);
+
+        // Campos de entrada para Héroes y Antihéroes
+        inputPanel.add(new JLabel("Nombre:"));
+        nombreField = new JTextField();
+        inputPanel.add(nombreField);
+
+        inputPanel.add(new JLabel("Alias:"));
+        aliasField = new JTextField();
+        inputPanel.add(aliasField);
+
+        inputPanel.add(new JLabel("Identificación:"));
+        identificacionField = new JTextField();
+        inputPanel.add(identificacionField);
+
+        inputPanel.add(new JLabel("Nacionalidad:"));
+        nacionalidadField = new JTextField();
+        inputPanel.add(nacionalidadField);
+
+        inputPanel.add(new JLabel("Edad:"));
+        edadField = new JTextField();
+        inputPanel.add(edadField);
+
+        inputPanel.add(new JLabel("Habilidad:"));
+        habilidadField = new JTextField();
+        inputPanel.add(habilidadField);
+
+        inputPanel.add(new JLabel("Categoría de Habilidad:"));
+        categoriaHabilidadCombo = new JComboBox<>(new String[]{"Común", "Especial", "Épico", "Legendaria"});
+        inputPanel.add(categoriaHabilidadCombo);
+
+        inputPanel.add(new JLabel("Actor:"));
+        actorCombo = new JComboBox<>();
+        inputPanel.add(actorCombo);
+
+        // Añadir paneles al marco principal
+        mainPanel.add(buttonPanel, BorderLayout.NORTH);
+        mainPanel.add(inputPanel, BorderLayout.CENTER);
 
         tableModel = new DefaultTableModel(new Object[]{"Tipo", "Nombre", "Alias"}, 0);
         personajesTable = new JTable(tableModel);
 
-        add(panel, BorderLayout.NORTH);
+        add(mainPanel, BorderLayout.NORTH);
         add(new JScrollPane(personajesTable), BorderLayout.CENTER);
     }
 
@@ -125,18 +138,71 @@ public class MainFrame extends JFrame {
     }
 
     private void exportarATxt() {
-        String desktopPath = Paths.get(System.getProperty("user.home"), "Desktop", "personajes.txt").toString();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(desktopPath))) {
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                String tipo = (String) tableModel.getValueAt(i, 0);
-                String nombre = (String) tableModel.getValueAt(i, 1);
-                String alias = (String) tableModel.getValueAt(i, 2);
-                writer.write(tipo + ": " + nombre + " (" + alias + ")");
-                writer.newLine();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar como");
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileChooser.getSelectedFile()))) {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String tipo = (String) tableModel.getValueAt(i, 0);
+                    String nombre = (String) tableModel.getValueAt(i, 1);
+                    String alias = (String) tableModel.getValueAt(i, 2);
+                    writer.write(tipo + ": " + nombre + " (" + alias + ")");
+                    writer.newLine();
+
+                    if (tipo.equals("Héroe")) {
+                        for (Heroe heroe : heroes) {
+                            if (heroe.getNombre().equals(nombre)) {
+                                writer.write("  Identificación: " + heroe.getIdentificacion());
+                                writer.newLine();
+                                writer.write("  Nacionalidad: " + heroe.getActor().getNacionalidad());
+                                writer.newLine();
+                                writer.write("  Edad: " + heroe.getEdad());
+                                writer.newLine();
+                                writer.write("  Habilidades: ");
+                                for (Habilidad habilidad : heroe.getHabilidades()) {
+                                    writer.write(habilidad.getNombre() + ", ");
+                                }
+                                writer.newLine();
+                                break;
+                            }
+                        }
+                    } else if (tipo.equals("Antihéroe")) {
+                        for (Antihéroe antihéroe : antihéroes) {
+                            if (antihéroe.getNombre().equals(nombre)) {
+                                writer.write("  Identificación: " + antihéroe.getIdentificacion());
+                                writer.newLine();
+                                writer.write("  Nacionalidad: " + antihéroe.getActor().getNacionalidad());
+                                writer.newLine();
+                                writer.write("  Edad: " + antihéroe.getEdad());
+                                writer.newLine();
+                                writer.write("  Habilidades: ");
+                                for (Habilidad habilidad : antihéroe.getHabilidades()) {
+                                    writer.write(habilidad.getNombre() + ", ");
+                                }
+                                writer.newLine();
+                                break;
+                            }
+                        }
+                    } else if (tipo.equals("Actor")) {
+                        for (Actor actor : actores) {
+                            if (actor.getNombre().equals(nombre)) {
+                                writer.write("  Identificación: " + actor.getIdentificacion());
+                                writer.newLine();
+                                writer.write("  Nacionalidad: " + actor.getNacionalidad());
+                                writer.newLine();
+                                writer.write("  Edad: " + actor.getEdad());
+                                writer.newLine();
+                                break;
+                            }
+                        }
+                    }
+                }
+                JOptionPane.showMessageDialog(this, "Datos exportados exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al exportar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(this, "Datos exportados exitosamente a " + desktopPath, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al exportar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -157,9 +223,14 @@ public class MainFrame extends JFrame {
             }
 
             Heroe heroe = new Heroe(nombre, identificacion, alias, actor, edad);
-            heroe.agregarHabilidad(new Habilidad(habilidadNombre + " (" + categoriaHabilidad + ")", ""));
-            heroes.add(heroe);
-            tableModel.addRow(new Object[]{"Héroe", heroe.getNombre(), heroe.getAlias()});
+            int maxHabilidades = getMaxHabilidades(categoriaHabilidad);
+            if (heroe.getHabilidades().size() < maxHabilidades) {
+                heroe.agregarHabilidad(new Habilidad(habilidadNombre + " (" + categoriaHabilidad + ")", ""));
+                heroes.add(heroe);
+                tableModel.addRow(new Object[]{"Héroe", heroe.getNombre(), heroe.getAlias()});
+            } else {
+                JOptionPane.showMessageDialog(this, "Este héroe ya tiene el número máximo de habilidades.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -182,11 +253,31 @@ public class MainFrame extends JFrame {
             }
 
             Antihéroe antihéroe = new Antihéroe(nombre, identificacion, alias, actor, edad);
-            antihéroe.agregarHabilidad(new Habilidad(habilidadNombre + " (" + categoriaHabilidad + ")", ""));
-            antihéroes.add(antihéroe);
-            tableModel.addRow(new Object[]{"Antihéroe", antihéroe.getNombre(), antihéroe.getAlias()});
+            int maxHabilidades = getMaxHabilidades(categoriaHabilidad);
+            if (antihéroe.getHabilidades().size() < maxHabilidades) {
+                antihéroe.agregarHabilidad(new Habilidad(habilidadNombre + " (" + categoriaHabilidad + ")", ""));
+                antihéroes.add(antihéroe);
+                tableModel.addRow(new Object[]{"Antihéroe", antihéroe.getNombre(), antihéroe.getAlias()});
+            } else {
+                JOptionPane.showMessageDialog(this, "Este antihéroe ya tiene el número máximo de habilidades.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private int getMaxHabilidades(String categoria) {
+        switch (categoria) {
+            case "Común":
+                return 2;
+            case "Especial":
+                return 3;
+            case "Épico":
+                return 4;
+            case "Legendaria":
+                return 5;
+            default:
+                return 1;
         }
     }
 

@@ -12,10 +12,8 @@ import java.util.List;
 
 public class Exportador {
 
-    public static void exportarHeroes(List<Heroe> heroes) {
-        // Construct the path to the desktop
-        String desktopPath = Paths.get(System.getProperty("user.home"), "Desktop", "heroes.txt").toString();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(desktopPath))) {
+    public static void exportarHeroes(List<Heroe> heroes, String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Heroe heroe : heroes) {
                 writer.write("Nombre: " + heroe.getNombre() + "\n");
                 writer.write("Alias: " + heroe.getAlias() + "\n");
@@ -28,7 +26,7 @@ public class Exportador {
                 }
                 writer.write("\n");
             }
-            JOptionPane.showMessageDialog(null, "Héroes exportados exitosamente a " + desktopPath, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Héroes exportados exitosamente a " + filePath, "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al exportar héroes: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
