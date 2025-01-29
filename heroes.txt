@@ -1,0 +1,20 @@
+Nombre: Iron Man
+Alias: MARVEL-001
+Identificación: Tony Stark
+Actor: Robert Downey Jr.
+Nacionalidad: Estadounidense
+Edad: 55
+Habilidades:
+- Inteligencia Artificial (Tecnología)
+- Vuelo (Tecnología)
+------------------------
+Nombre: Spider-Man
+Alias: MARVEL-002
+Identificación: Peter Parker
+Actor: Tom Holland
+Nacionalidad: Británico
+Edad: 25
+Habilidades:
+- Telaraña (Habilidad)
+- Sentido Arácnido (Habilidad)
+------------------------
