@@ -151,7 +151,7 @@ public class MainFrame extends JFrame {
             String categoriaHabilidad = (String) categoriaHabilidadCombo.getSelectedItem();
             Actor actor = (Actor) actorCombo.getSelectedItem();
 
-            if (nombre.isEmpty() || alias.isEmpty() || identificacion.isEmpty() || nacionalidad.isEmpty() || habilidadNombre.isEmpty() || actor == null) {
+            if (nombre.isEmpty() || alias.isEmpty() || identificacion.isEmpty() || nacionalidad.isEmpty() || habilidadNombre.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -176,7 +176,7 @@ public class MainFrame extends JFrame {
             String categoriaHabilidad = (String) categoriaHabilidadCombo.getSelectedItem();
             Actor actor = (Actor) actorCombo.getSelectedItem();
 
-            if (nombre.isEmpty() || alias.isEmpty() || identificacion.isEmpty() || nacionalidad.isEmpty() || habilidadNombre.isEmpty() || actor == null) {
+            if (nombre.isEmpty() || alias.isEmpty() || identificacion.isEmpty() || nacionalidad.isEmpty() || habilidadNombre.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -202,7 +202,7 @@ public class MainFrame extends JFrame {
                         nombreField.setText(heroe.getNombre());
                         aliasField.setText(heroe.getAlias());
                         identificacionField.setText(heroe.getIdentificacion());
-                        nacionalidadField.setText(heroe.getActor().getNacionalidad());
+                        nacionalidadField.setText(heroe.getActor() != null ? heroe.getActor().getNacionalidad() : "");
                         edadField.setText(String.valueOf(heroe.getEdad()));
                         habilidadField.setText(heroe.getHabilidades().get(0).getNombre());
                         actorCombo.setSelectedItem(heroe.getActor());
@@ -215,7 +215,7 @@ public class MainFrame extends JFrame {
                         nombreField.setText(antihéroe.getNombre());
                         aliasField.setText(antihéroe.getAlias());
                         identificacionField.setText(antihéroe.getIdentificacion());
-                        nacionalidadField.setText(antihéroe.getActor().getNacionalidad());
+                        nacionalidadField.setText(antihéroe.getActor() != null ? antihéroe.getActor().getNacionalidad() : "");
                         edadField.setText(String.valueOf(antihéroe.getEdad()));
                         habilidadField.setText(antihéroe.getHabilidades().get(0).getNombre());
                         actorCombo.setSelectedItem(antihéroe.getActor());
